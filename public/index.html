@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <title>Turn It</title>
+  <meta name="description" content="Turn It — aligne tes pions pendant que la grille pivote. Solo contre l'IA, à deux, en mode Rapide ou en ligne." />
+  <meta name="theme-color" content="#0a0b10" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Icônes -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-solo" viewBox="0 0 24 24"><circle cx="12" cy="7" r="3.2"/><path d="M5.5 20.5v-1.8A5.2 5.2 0 0 1 10.7 13.5h2.6a5.2 5.2 0 0 1 5.2 5.2v1.8"/></symbol>
+      <symbol id="i-duo" viewBox="0 0 24 24"><circle cx="8.5" cy="8" r="2.8"/><circle cx="16.5" cy="8" r="2.8"/><path d="M2.8 19.5v-1a4.6 4.6 0 0 1 4.6-4.6h2.2a4.6 4.6 0 0 1 4.6 4.6v1M14.8 14h1.8a4.6 4.6 0 0 1 4.6 4.6v.9"/></symbol>
+      <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13.2 2.8 5.5 13.4h6l-1 7.8 7.8-10.7h-6z"/></symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3z"/></symbol>
+      <symbol id="i-dex" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><path d="M17 13.8l1.1 2.2 2.4.3-1.8 1.7.5 2.4-2.2-1.2-2.2 1.2.5-2.4-1.8-1.7 2.4-.3z"/></symbol>
+      <symbol id="i-stats" viewBox="0 0 24 24"><path d="M4 20V11M10 20V5M16 20v-6M22 20H2"/></symbol>
+      <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.4 9.3a2.7 2.7 0 0 1 5.2 1c0 1.8-2.6 2.3-2.6 4"/><circle cx="12" cy="17.4" r=".4"/></symbol>
+      <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M15.5 9a4.2 4.2 0 0 1 0 6M18.2 6.4a8 8 0 0 1 0 11.2"/></symbol>
+      <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></symbol>
+      <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+      <symbol id="i-restart" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3M4.5 4v4h4"/></symbol>
+      <symbol id="i-undo" viewBox="0 0 24 24"><path d="M9 5 4.5 9.5 9 14"/><path d="M4.5 9.5h9.5a5.5 5.5 0 0 1 0 11H10"/></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/></symbol>
+      <symbol id="i-share" viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.4"/><circle cx="17.5" cy="6" r="2.4"/><circle cx="17.5" cy="18" r="2.4"/><path d="M8.2 10.9l7.1-3.7M8.2 13.1l7.1 3.7"/></symbol>
+      <symbol id="i-ccw" viewBox="0 0 24 24"><path d="M8 4.5H4v4"/><path d="M4.3 8.3A8.5 8.5 0 1 1 5 16.8"/></symbol>
+      <symbol id="i-cw" viewBox="0 0 24 24"><path d="M16 4.5h4v4"/><path d="M19.7 8.3A8.5 8.5 0 1 0 19 16.8"/></symbol>
+      <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.5 18.5V7a2.5 2.5 0 0 1 2.5-2.5h10A2.5 2.5 0 0 1 19.5 7v7a2.5 2.5 0 0 1-2.5 2.5H8.5z"/></symbol>
+      <symbol id="i-trophy" viewBox="0 0 24 24"><path d="M8 4.5h8v5a4 4 0 0 1-8 0zM8 6.5H5a3 3 0 0 0 3 4M16 6.5h3a3 3 0 0 1-3 4M12 13.5v3.5M8.5 20.5h7M9.5 17h5v3.5h-5z"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="3"/><path d="M10.5 9.5v5l4-2.5z"/></symbol>
+      <symbol id="i-infinity" viewBox="0 0 24 24"><path d="M12 12c-2-2.7-3.6-4-5.5-4a4 4 0 0 0 0 8c1.9 0 3.5-1.3 5.5-4zm0 0c2 2.7 3.6 4 5.5 4a4 4 0 0 0 0-8c-1.9 0-3.5 1.3-5.5 4z"/></symbol>
+      <symbol id="i-gift" viewBox="0 0 24 24"><rect x="4" y="9.5" width="16" height="11" rx="1.5"/><path d="M3 9.5h18M12 9.5v11M12 9.5c-1.5-3.5-5.5-4-5.5-1.5 0 1.5 2.5 1.5 5.5 1.5zm0 0c1.5-3.5 5.5-4 5.5-1.5 0 1.5-2.5 1.5-5.5 1.5z"/></symbol>
+      <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="2.5"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></symbol>
+    </defs>
+  </svg>
+
+  <div id="app">
+    <!-- ACCUEIL -->
+    <section id="screen-home" class="screen active" aria-label="Accueil">
+      <div class="home-inner">
+        <header class="brand">
+          <div class="logo-board" aria-hidden="true">
+            <span class="d p1"></span><span class="d"></span><span class="d p2"></span>
+            <span class="d"></span><span class="d p2"></span><span class="d p1"></span>
+            <span class="d p1"></span><span class="d p1"></span><span class="d p2"></span>
+          </div>
+          <h1 class="logo">TURN<span>IT</span></h1>
+          <p class="tagline">Aligne tes pions. La grille, elle, tourne.</p>
+        </header>
+
+        <nav class="modes">
+          <button class="mode-card" data-mode="solo">
+            <span class="mode-ico"><svg><use href="#i-solo"/></svg></span>
+            <span class="mode-txt"><b>Solo</b><small>Affronte l'IA · 13 niveaux</small></span>
+            <span class="mode-go">›</span>
+          </button>
+          <button class="mode-card" data-mode="duo">
+            <span class="mode-ico"><svg><use href="#i-duo"/></svg></span>
+            <span class="mode-txt"><b>2 joueurs</b><small>Sur le même écran</small></span>
+            <span class="mode-go">›</span>
+          </button>
+          <button class="mode-card" data-mode="rapide">
+            <span class="mode-ico"><svg><use href="#i-bolt"/></svg></span>
+            <span class="mode-txt"><b>Rapide</b><small>4×4 · Complète ton Griddex</small></span>
+            <span class="mode-go">›</span>
+          </button>
+          <button class="mode-card online" data-mode="online">
+            <span class="mode-ico"><svg><use href="#i-globe"/></svg></span>
+            <span class="mode-txt"><b>En ligne</b><small>Classé, entre amis ou contre un inconnu</small></span>
+            <span class="mode-go">›</span>
+          </button>
+        </nav>
+
+        <footer class="home-foot">
+          <button class="foot-btn" data-go="griddex"><svg><use href="#i-dex"/></svg><span>Griddex</span></button>
+          <button class="foot-btn" data-go="stats"><svg><use href="#i-stats"/></svg><span>Stats</span></button>
+          <button class="foot-btn" data-go="rules"><svg><use href="#i-help"/></svg><span>Règles</span></button>
+          <button class="foot-btn" id="sound-toggle"><svg><use href="#i-sound"/></svg><span>Son</span></button>
+        </footer>
+      </div>
+    </section>
+
+    <!-- PARTIE -->
+    <section id="screen-game" class="screen" aria-label="Partie">
+      <header class="topbar">
+        <button class="icon-btn" data-action="quit" aria-label="Quitter la partie"><svg><use href="#i-back"/></svg></button>
+        <div class="topbar-title">
+          <b id="g-mode">Solo</b>
+          <small id="g-params">6×6 · série de 4 · pivot 2</small>
+        </div>
+        <button class="icon-btn" data-action="restart" id="g-restart" aria-label="Recommencer"><svg><use href="#i-restart"/></svg></button>
+      </header>
+
+      <div class="players">
+        <div class="pcard p1" id="pc1">
+          <div class="pc-top"><span class="pc-disc"></span><span class="pc-name" id="pn1">Joueur 1</span><span class="pc-net" id="pnet1"></span></div>
+          <div class="pc-score"><span id="ps1">0</span><em class="pc-gain" id="pg1"></em></div>
+          <div class="pc-moves"><i></i><i></i></div>
+          <div class="pc-emote" id="pe1"></div>
+        </div>
+        <div class="pcard p2" id="pc2">
+          <div class="pc-top"><span class="pc-disc"></span><span class="pc-name" id="pn2">Joueur 2</span><span class="pc-net" id="pnet2"></span></div>
+          <div class="pc-score"><span id="ps2">0</span><em class="pc-gain" id="pg2"></em></div>
+          <div class="pc-moves"><i></i><i></i></div>
+          <div class="pc-emote" id="pe2"></div>
+        </div>
+      </div>
+
+      <p class="status" id="g-status" aria-live="polite"></p>
+
+      <div class="board-area" id="board"></div>
+
+      <div class="game-foot">
+        <div class="legend"><span><svg><use href="#i-ccw"/></svg> pivote à gauche</span><button class="undo-btn" id="g-undo" data-action="undo" aria-label="Annuler le dernier coup"><svg><use href="#i-undo"/></svg>Annuler</button><span>pivote à droite <svg><use href="#i-cw"/></svg></span></div>
+        <div class="emotes" id="emotes" hidden>
+          <button data-e="👋">👋</button><button data-e="😮">😮</button><button data-e="😂">😂</button><button data-e="😤">😤</button><button data-e="👏">👏</button><button data-e="GG">GG</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- EN LIGNE -->
+    <section id="screen-online" class="screen" aria-label="En ligne">
+      <header class="topbar">
+        <button class="icon-btn" data-go="home" aria-label="Retour"><svg><use href="#i-back"/></svg></button>
+        <div class="topbar-title"><b>En ligne</b><small><span class="net-dot" id="net-dot"></span><span id="net-label">Hors ligne</span></small></div>
+        <span class="icon-btn ghost"></span>
+      </header>
+      <div class="scroll">
+        <div class="panel account" id="o-account"></div>
+
+        <div class="panel" id="o-guest">
+          <label class="field">
+            <span>Ton pseudo (parties non classées)</span>
+            <input id="o-name" maxlength="16" autocomplete="nickname" placeholder="Joueur" />
+          </label>
+          <label class="field" id="o-server-box" hidden>
+            <span>Serveur</span>
+            <input id="o-server" inputmode="url" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="http://192.168.1.10:3000" />
+          </label>
+        </div>
+
+        <div id="o-idle">
+          <div class="panel">
+            <h3>Partie amicale</h3>
+            <p class="muted">Non classée et illimitée : on te trouve un adversaire qui cherche une partie en même temps.</p>
+            <div class="seg" id="o-format">
+              <button data-v="classic" class="on">Classique 6×6</button>
+              <button data-v="rapide">Rapide 4×4</button>
+            </div>
+            <button class="btn primary wide" id="o-quick"><svg><use href="#i-globe"/></svg>Chercher un adversaire</button>
+          </div>
+
+          <div class="panel">
+            <h3>Salon privé</h3>
+            <p class="muted">Crée un salon et envoie le code à un ami.</p>
+            <div id="o-settings"></div>
+            <button class="btn wide" id="o-create">Créer un salon</button>
+            <div class="divider"><span>ou</span></div>
+            <form class="join-row" id="o-join-form">
+              <input id="o-code" maxlength="4" placeholder="CODE" autocomplete="off" autocapitalize="characters" spellcheck="false" />
+              <button class="btn primary" type="submit">Rejoindre</button>
+            </form>
+          </div>
+        </div>
+
+        <div id="o-wait" class="panel wait" hidden>
+          <div class="spinner" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+          <h3 id="o-wait-title">Recherche d'un adversaire…</h3>
+          <div id="o-room" hidden>
+            <p class="muted">Donne ce code à ton ami :</p>
+            <div class="room-code" id="o-room-code">----</div>
+            <p class="muted small" id="o-room-params"></p>
+            <div class="row">
+              <button class="btn" id="o-copy"><svg><use href="#i-copy"/></svg>Copier</button>
+              <button class="btn" id="o-share"><svg><use href="#i-share"/></svg>Partager</button>
+            </div>
+          </div>
+          <button class="btn ghost wide" id="o-cancel">Annuler</button>
+        </div>
+        <p class="muted small center" id="o-help">Pour jouer à distance, le serveur doit être hébergé en ligne (voir README). Sur un même Wi-Fi, ouvre l'adresse « réseau local » affichée au lancement.</p>
+      </div>
+    </section>
+
+    <!-- CLASSEMENT -->
+    <section id="screen-leaderboard" class="screen" aria-label="Classement">
+      <header class="topbar">
+        <button class="icon-btn" data-go="online" aria-label="Retour"><svg><use href="#i-back"/></svg></button>
+        <div class="topbar-title"><b>Classement</b><small id="lb-count">Elo des joueurs classés</small></div>
+        <span class="icon-btn ghost"></span>
+      </header>
+      <div class="scroll">
+        <div id="lb-me"></div>
+        <div class="lb" id="lb-list"></div>
+      </div>
+    </section>
+
+    <!-- GRIDDEX -->
+    <section id="screen-griddex" class="screen" aria-label="Griddex">
+      <header class="topbar">
+        <button class="icon-btn" data-go="home" aria-label="Retour"><svg><use href="#i-back"/></svg></button>
+        <div class="topbar-title"><b>Griddex</b><small id="dex-count">0 grille découverte</small></div>
+        <span class="icon-btn ghost"></span>
+      </header>
+      <div class="scroll">
+        <div class="dex-summary" id="dex-summary"></div>
+        <p class="muted small center">Chaque partie Rapide terminée enregistre la grille finale. Plus une grille est improbable, plus elle est rare.</p>
+        <div class="dex-grid" id="dex-grid"></div>
+      </div>
+    </section>
+
+    <!-- STATS -->
+    <section id="screen-stats" class="screen" aria-label="Statistiques">
+      <header class="topbar">
+        <button class="icon-btn" data-go="home" aria-label="Retour"><svg><use href="#i-back"/></svg></button>
+        <div class="topbar-title"><b>Statistiques</b><small>Sur cet appareil</small></div>
+        <span class="icon-btn ghost"></span>
+      </header>
+      <div class="scroll" id="stats-body"></div>
+    </section>
+
+    <!-- RÈGLES -->
+    <section id="screen-rules" class="screen" aria-label="Règles">
+      <header class="topbar">
+        <button class="icon-btn" data-go="home" aria-label="Retour"><svg><use href="#i-back"/></svg></button>
+        <div class="topbar-title"><b>Règles</b><small>Comment jouer</small></div>
+        <span class="icon-btn ghost"></span>
+      </header>
+      <div class="scroll rules">
+        <div class="rule"><span class="rule-n">1</span><div><b>Lâche un pion</b><p>Touche une colonne : ton pion tombe tout en bas, comme au puissance 4.</p></div></div>
+        <div class="rule"><span class="rule-n">2</span><div><b>Fais tourner la grille</b><p>Les colonnes marquées <svg class="inl"><use href="#i-ccw"/></svg> à gauche font pivoter la grille d'un quart de tour vers la gauche, celles marquées <svg class="inl"><use href="#i-cw"/></svg> à droite vers la droite. Après la rotation, tous les pions retombent.</p></div></div>
+        <div class="rule"><span class="rule-n">3</span><div><b>Marque des points</b><p>Chaque série de pions alignés (ligne, colonne ou diagonale) rapporte 1 point <em>à chaque coup</em> tant qu'elle reste en place — les tiennes comme celles de l'adversaire.</p></div></div>
+        <div class="rule"><span class="rule-n">4</span><div><b>Deux coups par tour</b><p>Le premier joueur joue un seul coup, ensuite chacun joue deux coups d'affilée.</p></div></div>
+        <div class="rule"><span class="rule-n">5</span><div><b>Fin de partie</b><p>Quand la grille est pleine, le joueur qui a le plus de points gagne.</p></div></div>
+        <div class="panel">
+          <h3>Mode Rapide</h3>
+          <p class="muted">Grille 4×4, séries de 3, pivot d'une colonne. Le score n'est pas cumulé : seules les séries présentes comptent. Chaque grille finale rejoint ton <b>Griddex</b> — à toi de trouver les plus rares !</p>
+        </div>
+        <div class="panel">
+          <h3>Réglages</h3>
+          <p class="muted"><b>Taille</b> : de 5×5 à 9×9. <b>Série</b> : nombre de pions à aligner. <b>Pivot</b> : nombre de colonnes de chaque côté qui font tourner la grille. <b>Niveau IA</b> : de 1 (hasard) à 13 (anticipe plusieurs coups).</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Feuille de réglages avant partie -->
+  <div class="sheet-back" id="sheet" hidden>
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title">
+      <div class="sheet-grip"></div>
+      <div class="sheet-head">
+        <h2 id="sheet-title">Solo</h2>
+        <button class="icon-btn" data-action="close-sheet" aria-label="Fermer"><svg><use href="#i-close"/></svg></button>
+      </div>
+      <div id="sheet-body"></div>
+      <button class="btn primary wide big" id="sheet-play">Jouer</button>
+    </div>
+  </div>
+
+  <!-- Fin de partie -->
+  <div class="modal-back" id="end" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="end-title">
+      <div class="end-badge" id="end-badge"></div>
+      <h2 id="end-title">Victoire !</h2>
+      <p class="muted" id="end-sub"></p>
+      <div class="end-scores">
+        <div class="es p1"><span id="es-n1">Joueur 1</span><b id="es-s1">0</b></div>
+        <div class="es p2"><span id="es-n2">Joueur 2</span><b id="es-s2">0</b></div>
+      </div>
+      <div class="end-elo" id="end-elo" hidden></div>
+      <div class="end-dex" id="end-dex" hidden></div>
+      <div class="end-actions">
+        <button class="btn ghost" id="end-menu">Menu</button>
+        <button class="btn primary" id="end-again">Rejouer</button>
+      </div>
+      <button class="link-btn" id="end-view">Voir la grille</button>
+    </div>
+  </div>
+
+  <div class="confirm-back" id="confirm" hidden>
+    <div class="modal small">
+      <h2 id="confirm-title">Quitter la partie ?</h2>
+      <p class="muted" id="confirm-sub"></p>
+      <div class="end-actions">
+        <button class="btn ghost" id="confirm-no">Annuler</button>
+        <button class="btn danger" id="confirm-yes">Quitter</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Boutique : parties classées illimitées -->
+  <div class="modal-back" id="shop" hidden>
+    <div class="modal shop" role="dialog" aria-modal="true" aria-labelledby="shop-title">
+      <button class="icon-btn shop-close" data-action="close-shop" aria-label="Fermer"><svg><use href="#i-close"/></svg></button>
+      <div class="shop-ico"><svg><use href="#i-infinity"/></svg></div>
+      <h2 id="shop-title">Parties illimitées</h2>
+      <p class="muted">Joue autant de parties classées que tu veux, sans attendre minuit.</p>
+      <div class="plans" id="shop-plans"></div>
+      <p class="test-note" id="shop-note">Mode test : aucun paiement réel n'est effectué.</p>
+    </div>
+  </div>
+
+  <!-- Publicité récompensée -->
+  <div class="ad-back" id="ad" hidden>
+    <div class="ad-top">
+      <span class="ad-tag">Publicité · mode test</span>
+      <button class="ad-close" id="ad-close" aria-label="Fermer la publicité"><span id="ad-count">30</span><svg><use href="#i-close"/></svg></button>
+    </div>
+    <div class="ad-stage">
+      <div class="ad-art"><span></span><span></span><span></span><span></span></div>
+      <h2>Ton annonce ici</h2>
+      <p>Une vraie publicité récompensée (AdMob) s'affichera à cet endroit une fois le réseau publicitaire branché.</p>
+    </div>
+    <div class="ad-foot">
+      <div class="ad-bar"><i id="ad-bar"></i></div>
+      <button class="btn primary wide big" id="ad-claim" hidden><svg><use href="#i-gift"/></svg>Récupérer mon bonus</button>
+      <p class="muted small center" id="ad-hint">Regarde la publicité jusqu'au bout pour gagner 1 bonus.</p>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="config.js"></script>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

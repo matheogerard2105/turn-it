@@ -1,0 +1,15 @@
+{
+  "name": "turn-it",
+  "version": "1.0.0",
+  "description": "Turn It — puissance 4 où la grille pivote. Solo, 2 joueurs, Rapide et En ligne.",
+  "type": "module",
+  "main": "server/server.js",
+  "scripts": {
+    "start": "node server/server.js",
+    "test": "node --test"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "ws": "^8.18.0"
+  }
+}
